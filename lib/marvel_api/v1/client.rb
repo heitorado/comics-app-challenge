@@ -3,14 +3,12 @@ require 'rest-client'
 module MarvelApi
   module V1
     class Client
-      THUMBNAIL_SIZES = {
-        small: 'portrait_small',
-        medium: 'portrait_xlarge',
-        large: 'portrait_uncanny',
-        original: 'detail'
-      }.freeze
-      
-      MAX_COMICS_PER_PAGE = 100
+      include MarvelApi::V1::ParameterValues
+
+      DEFAULT_SORT_PARAMETER = SORT_PARAMETER[:on_sale_date]
+      DEFAULT_SORT_DIRECTION = SORT_DIRECTION[:desc]
+      DEFAULT_FORMAT_TYPE = FORMAT_TYPE[:comic]
+      DEFAULT_COMICS_PER_PAGE = 100
 
       def initialize
         @api_url = Rails.application.credentials.marvel_api[:url]
