@@ -15,12 +15,25 @@ module MarvelApi
         @credentials = build_credentials
       end
 
-      def comics(page:, limit: MAX_COMICS_PER_PAGE)
-        limit = limit > MAX_COMICS_PER_PAGE ? MAX_COMICS_PER_PAGE : limit
+      def comics(page:, limit: DEFAULT_COMICS_PER_PAGE, **opts)
         page = page < 1 ? 1 : page
+        limit = limit > DEFAULT_COMICS_PER_PAGE ? DEFAULT_COMICS_PER_PAGE : limit
+        
+        sort_parameter = opts[:sort_parameter] || DEFAULT_SORT_PARAMETER
+        sort_direction = opts[:sort_direction] || DEFAULT_SORT_DIRECTION
+        format_type = opts[:format_type] || DEFAULT_FORMAT_TYPE
+        no_variants = opts[:no_variants].present? ? opts[:no_variants] : true
 
         parse(
-          get('/comics', limit: limit, offset: (page - 1) * limit).body
+          get(
+            '/comics', 
+            limit: limit, 
+            offset: (page - 1) * limit, 
+            orderBy: "#{sort_direction}#{sort_parameter}", 
+            formatType: format_type, 
+            noVariants: no_variants,
+            dateRange: ",#{Time.current.strftime('%Y-%m-%d')}"
+          ).body
         )
       end
 
