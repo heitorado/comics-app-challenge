@@ -26,3 +26,43 @@ Observations:
 - The comics that a specific character is in can be obtained by v1/public/characters/:character_id/comics
 
 Made some API requests with insomnia to get familiar with the format. The main question now is how to synchronize this read-only API with the user preferences (the comics marked as favourite, for instance)
+
+### Day 2
+#### Part 1
+As for how to synchronize the objects retrieved by the API with the application-specific attributes, it seems that [ActiveResource](https://github.com/rails/activeresource) has what I need, or maybe [Her](https://github.com/remi/her).
+Those might be a bit of overkill though, since the API is read only and just the comics will need to be marked as favourite. It would strongly bind the application to the API structure, which _might_ make it future-proof but also increase coupling a lot.
+
+Quick solution: Build a wrapper from scratch and then think how to deal with setting/retrieving the favourite comics for the User later?
+
+#### Part 2
+Initialized fresh Rails app today.
+Installed rest-client gem
+Started coding marvel api wrapper
+Added marvel api credentials to the encrypted credentials file.
+
+#### Part 3
+The API wrapper is looking good so far. Marvel's API has its own way to deal with images, so I can't just retrieve the raw value from the payload and put into the HTML. I think it is a good idea to create a 'Comic' [value object](https://martinfowler.com/bliki/ValueObject.html) so the API wrapper returns them instead of the raw JSON payload.
+
+#### Part 4
+Built a service to consume the interface defined by the API wrapper. This service is responsible to build 'Comic' objects from the payload obtained from the wrapper.
+The main idea here is that the wrapper just cares about accessing the API and returning the JSON payload. Inside the wrapper are also defined some constants as per the API documentation (thumbnail sizes, for instance). So the wrapper is ignorant about the existance of everything else in the application. It just has the rules for acessing the api, the means to access it, and returns the raw JSON as a ruby hash.
+The service, on the other side, acts as a glue layer between the controller and the wrapper, but it is also ignorant about what the controller does. It just knows how to call the wrapper, process the raw hash payload into 'Comic' objects and send them back. The controller now has easy-to use wrapped objects with useful information to populate the views.
+
+#### Part 5
+Sorting was a bit of a headache. Spent several hours trying to understand some inconsistencies on the API. First, I'm assuming that the paramter that has to be sorted is the 'onsaleDate' since this is the parameter used by the official Marvel website for the "published at" date. Problems:
+- This was an url that came in one of the API responses for a comic: https://www.marvel.com/comics/issue/3627/storm_2006?utm_campaign=apiRef&utm_source=07e3e205bebd46de31d15ee9a76d85c2. Accessing it, the title says the comic is from 2006, but the "Published" says "December 31, 2029". There are a couple of other comics with years such as 2029 and 2099.
+- Some comics have this weird release date and also a lot of other comics with different ids associated to it, called "variants". From those variants, though, very few have a cover image, as can be seen here: https://www.marvel.com/comics/issue/59739/civil_war_ii_kingpin_2016_1_noto_character_variant/noto_character_variant?utm_campaign=apiRef&utm_source=07e3e205bebd46de31d15ee9a76d85c2
+- I though about excluding from the response comics that were with a release date after the current day, but that would not solve the problem. After some investigation on the ordered response that came from the API, there still are some inconsistencies between the published date and the title of the comic itself: https://www.marvel.com/comics/issue/84362/avengers_2018_44. This one has "(2018)" in the title but the Marvel website says it was published in April 7th, 2021. The release date is the same for all its variants as well.
+
+There are two interesting request parameters that I could use:
+- formatType (can be comic or collection, I would set it to 'comic')
+- noVariants (bool, if false no variants would be shown, only the original comic issue)
+
+#### Part 6
+Ended up configuring those additional parameters to increase the quality of the response as much as I could. Also configured the dateRange attribute to return comics released only before/on the present day. Enhanced the interface between the service and the wrapper, allowing the parameters to be overriden if necessary.
+
+Started working on the layout to take a break from the back end. Found [this tool](https://imagecolorpicker.com/en) which helped me quickly find the colors used. Also learned about [flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox) and I am positively surprised on how easy it was to replicate the design with it, just took a few css lines.
+
+Also learned how to do the nice hover effect for each comic cover to display its title.
+
+Added the assets to the main project and finished the basic initial layout of the comics listing page, with logo and search box.
