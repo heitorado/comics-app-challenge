@@ -16,8 +16,8 @@
         <%= image_tag 'marvel_logo.png' %>
       </div>
       <div class="search">
-        <%= form_with class: 'character-search-form', url: "/search", method: :get do |form| %>
-          <%= form.text_field :character_search, placeholder: 'Search by Marvel character...', class: 'character-search-input' %>
+        <%= form_with class: 'character-search-form', url: "/search_by_character", method: :get do |form| %>
+          <%= form.text_field :character_name_query, placeholder: 'Search by Marvel character...', class: 'character-search-input', value: params[:character_name_query] %>
           <%= form.submit "Search" %>
         <% end %>
       </div>
