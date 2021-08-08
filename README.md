@@ -32,7 +32,7 @@ Made some API requests with insomnia to get familiar with the format. The main q
 As for how to synchronize the objects retrieved by the API with the application-specific attributes, it seems that [ActiveResource](https://github.com/rails/activeresource) has what I need, or maybe [Her](https://github.com/remi/her).
 Those might be a bit of overkill though, since the API is read only and just the comics will need to be marked as favourite. It would strongly bind the application to the API structure, which _might_ make it future-proof but also increase coupling a lot.
 
-Quick solution: Build a wrapper from scratch and then think how to deal with setting/retrieving the favourite comics for the User later?
+~~Quick~~ (at day 3 realized it wasn't so quick) solution: Build a wrapper from scratch and then think how to deal with setting/retrieving the favourite comics for the User later?
 
 #### Part 2
 Initialized fresh Rails app today.
@@ -49,7 +49,7 @@ The main idea here is that the wrapper just cares about accessing the API and re
 The service, on the other side, acts as a glue layer between the controller and the wrapper, but it is also ignorant about what the controller does. It just knows how to call the wrapper, process the raw hash payload into 'Comic' objects and send them back. The controller now has easy-to use wrapped objects with useful information to populate the views.
 
 #### Part 5
-Sorting was a bit of a headache. Spent several hours trying to understand some inconsistencies on the API. First, I'm assuming that the paramter that has to be sorted is the 'onsaleDate' since this is the parameter used by the official Marvel website for the "published at" date. Problems:
+Sorting was a bit of a headache. Spent several hours trying to understand some inconsistencies on the API. First, I'm assuming that the parameter that has to be sorted is the 'onsaleDate' since this is the parameter used by the official Marvel website for the "published at" date. Problems:
 - This was an url that came in one of the API responses for a comic: https://www.marvel.com/comics/issue/3627/storm_2006?utm_campaign=apiRef&utm_source=07e3e205bebd46de31d15ee9a76d85c2. Accessing it, the title says the comic is from 2006, but the "Published" says "December 31, 2029". There are a couple of other comics with years such as 2029 and 2099.
 - Some comics have this weird release date and also a lot of other comics with different ids associated to it, called "variants". From those variants, though, very few have a cover image, as can be seen here: https://www.marvel.com/comics/issue/59739/civil_war_ii_kingpin_2016_1_noto_character_variant/noto_character_variant?utm_campaign=apiRef&utm_source=07e3e205bebd46de31d15ee9a76d85c2
 - I though about excluding from the response comics that were with a release date after the current day, but that would not solve the problem. After some investigation on the ordered response that came from the API, there still are some inconsistencies between the published date and the title of the comic itself: https://www.marvel.com/comics/issue/84362/avengers_2018_44. This one has "(2018)" in the title but the Marvel website says it was published in April 7th, 2021. The release date is the same for all its variants as well.
@@ -63,6 +63,14 @@ Ended up configuring those additional parameters to increase the quality of the 
 
 Started working on the layout to take a break from the back end. Found [this tool](https://imagecolorpicker.com/en) which helped me quickly find the colors used. Also learned about [flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox) and I am positively surprised on how easy it was to replicate the design with it, just took a few css lines.
 
-Also learned how to do the nice hover effect for each comic cover to display its title.
+Also learned how to do the nice hover effect for each comic cover to display its title thanks to [this video](https://www.youtube.com/watch?v=exb2ab72Xhs). [CSS Tricks](https://css-tricks.com) was a blessing once again for many things css related as well.
 
 Added the assets to the main project and finished the basic initial layout of the comics listing page, with logo and search box.
+
+### Day 3
+Implemented the search box logic, which allows to search by character. Added extra endpoint on the API and a Character value object.
+When searching by character, the /characters API endpoint is queried using the 'nameStartsWith' option, to give more flexibility when searching (does not require an exact match). The number of characters returned can be more than one, so the Character objects are created for each one of the characters - this way we can easily access the ID after and insert the list of IDs when querying for comics using the 'characters' query parameter.
+- The problem with this approach is that only 10 IDs can be passed at a time in the 'characters' parameter. So if more than 10 matching characters are found, not all of them would be used to query for comics. Although 10 characters _might_ be sufficient to track the most relevant characters that match the input string, there could be a user-frustrating corner case there.
+- Another approach would be to iterate through all Characters and obtain the complete list of comics which is provided in the payload. However, that would add an extra complexity to filter the comics, while on the previous approach the query does it directly with the character IDs.
+
+
