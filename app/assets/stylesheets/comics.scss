@@ -1,0 +1,66 @@
+@media (min-width:1000px){
+  .comics-grid {
+    margin: 0 15rem;
+  }
+}
+
+.comics-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: space-around;
+}
+
+.comic { 
+  position: relative;
+  margin: 0.5rem;
+
+  .comic-cover-overlay {
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    opacity: 0;
+    transition: opacity 0.25s;
+
+    .comic-title {
+      width: 100%;
+      min-height: 2.6rem;
+      background-color: white;
+      border-bottom: #ff0000;
+      border-style: solid;
+      border-top-width: 0;
+      border-bottom-width: 0.5rem;
+      display: flex;
+      align-items: center;
+    }
+
+    .comic-title-text {
+      color: #1e1e1e;
+      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      margin: 0 0.5rem;
+    }
+  }
+
+  .comic-cover-overlay > * {
+    transform: translateY(0.2rem);
+    transition: transform 0.25s;
+  }
+
+  .comic-cover-overlay:hover {
+    opacity: 1;
+  }
+
+  .comic-cover-overlay:hover > * {
+    transform: translateY(0);
+  }
+}

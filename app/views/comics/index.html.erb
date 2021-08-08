@@ -1,0 +1,14 @@
+<div class="comics-grid">
+  <% @comics.each do |comic| %>
+    <div class="comic">
+      <img class="comic-cover" src=<%= comic.thumbnail_urls[:medium] %> alt=<%= comic.title %>>
+      <div class="comic-cover-overlay">
+        <div class="comic-title">
+          <p class="comic-title-text">
+            <%= comic.title.upcase %>
+          </p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
