@@ -4,7 +4,8 @@ module Marvel
       @client = MarvelApi::V1::Client.new
     end
 
-    def get_comics(page:, limit:, **opts)
+    def get_comics(page:, **opts)
+      limit = opts[:limit] || MarvelApi::V1::Client::DEFAULT_ITEMS_PER_PAGE
       response_hash = @client.comics(page: page, limit: limit, **opts)
 
       comics_hash = response_hash.dig(:data, :results) || {}
