@@ -1,14 +1,26 @@
-<div class="comics-grid">
-  <% @comics.each do |comic| %>
-    <div class="comic">
-      <img class="comic-cover" src=<%= comic.thumbnail_urls[:medium] %> alt=<%= comic.title %>>
-      <div class="comic-cover-overlay">
-        <div class="comic-title">
-          <p class="comic-title-text">
-            <%= comic.title.upcase %>
-          </p>
+<div class="content">
+  <div class="comics-grid">
+    <% @comics.each do |comic| %>
+      <div class="comic">
+        <img class="comic-cover" src=<%= comic.thumbnail_urls[:medium] %> alt=<%= comic.title %>>
+        <div class="comic-cover-overlay">
+          <div class="comic-title">
+            <p class="comic-title-text">
+              <%= comic.title.upcase %>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
+
+  <div class="navigation">
+    <% unless first_page? %>
+      <%= link_to 'previous page', root_path(page: current_page - 1), class: 'page-navigation-button previous' %>
+    <% end %>
+
+    <% unless last_page? %>
+      <%= link_to 'next page', root_path(page: current_page + 1), class: 'page-navigation-button next' %>
+    <% end%>
+  </div>
 </div>
