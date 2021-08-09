@@ -1,5 +1,5 @@
 @media (min-width:1000px){
-  .comics-grid {
+  .content {
     margin: 0 15rem;
   }
 }
@@ -44,7 +44,6 @@
 
     .comic-title-text {
       color: #1e1e1e;
-      font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       font-size: 0.7rem;
       font-weight: bold;
       margin: 0 0.5rem;
@@ -62,5 +61,31 @@
 
   .comic-cover-overlay:hover > * {
     transform: translateY(0);
+  }
+}
+
+.navigation {
+  text-align: center;
+  padding: 0 4.5rem;
+  margin-top: 2rem;
+
+  .page-navigation-button {
+    background-color: white;
+    color: #ed2324;
+    padding: 0.2rem 0.5rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 8.5rem;
+  }
+
+  .next {
+    float: right;
+    margin-bottom: 3rem;
+  }
+
+  .previous {
+    float: left;
+    margin-bottom: 3rem;
   }
 }
