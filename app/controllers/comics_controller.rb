@@ -1,4 +1,6 @@
 class ComicsController < ApplicationController
+  before_action :set_current_user
+
   def index
     @comics_service = Marvel::ComicsService.new
     @comics = @comics_service.get_comics(page: comic_params[:page].to_i)
@@ -14,9 +16,29 @@ class ComicsController < ApplicationController
     render :index
   end
 
+  def favourite_comic
+    @user.favourite_comics[params[:comic_id]] = true
+    @user.save
+
+    render json: { favourite_button: render_to_string('comics/_favourite_button', layout: false, locals: { user: @user, comic_id: params[:comic_id] }) }
+  end
+
+  def unfavourite_comic
+    @user.favourite_comics.delete(params[:comic_id])
+    @user.save
+
+    render json: { favourite_button: render_to_string('comics/_favourite_button', layout: false, locals: { user: @user, comic_id: params[:comic_id] }) }
+  end
+
   private 
 
   def comic_params
     params.permit(:page, :character_name_query, :commit)
+  end
+
+  def set_current_user
+    @user = session[:user_id].present? ? User.find(session[:user_id]) : User.create!
+
+    session[:user_id] = @user.id
   end
 end

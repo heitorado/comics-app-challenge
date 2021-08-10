@@ -1,0 +1,5 @@
+<% if user.favourite_comics[comic_id.to_s] %>
+  <%= button_to 'Unfavourite', unfavourite_comic_path(comic_id), remote: true, class: 'unfavourite-button' %>
+<% else %>
+  <%= button_to 'Favourite', favourite_comic_path(comic_id), remote: true, class: 'favourite-button' %>
+<% end %>

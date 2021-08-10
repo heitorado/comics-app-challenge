@@ -10,6 +10,9 @@
             </p>
           </div>
         </div>
+        <div class="favourite-button-section">
+          <%= render partial: 'favourite_button', locals: { user: @user, comic_id: comic.id }%>
+        </div>
       </div>
     <% end %>
   </div>
