@@ -77,7 +77,6 @@ module MarvelApi
       end
 
       def get(route, params = {})
-        puts "#{@api_url}/#{route}?#{@credentials}&#{build_params(params)}"
         RestClient.get("#{@api_url}/#{route}?#{@credentials}&#{build_params(params)}")
       end
 
