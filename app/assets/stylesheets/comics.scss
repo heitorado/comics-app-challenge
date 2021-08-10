@@ -89,3 +89,40 @@
     margin-bottom: 3rem;
   }
 }
+
+.favourite-button-section {
+  position: absolute;
+  top: 0.2rem;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.favourite-button, .unfavourite-button {
+  margin: 0.3rem;
+}
+
+.favourite-button {
+  border-style: hidden;
+  background: image-url('heart_off.png');
+  background-size: cover;
+  height: 16px;
+  width: 18px;
+}
+
+.favourite-button:hover {
+  background: image-url('heart_hover.png');
+  background-size: cover;
+  height: 16px;
+  width: 18px;
+}
+
+.unfavourite-button {
+  border-style: hidden;
+  background: image-url('heart_on.png');
+  background-size: cover;
+  width: 23px;
+  height: 23px;
+}
