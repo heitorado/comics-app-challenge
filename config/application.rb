@@ -17,6 +17,11 @@ module ComicsAppChallenge
     # in config/environments, which are processed later.
     #
     # config.time_zone = "Central Time (US & Canada)"
+
+    config.session_store :cookie_store,
+      key: 'session',
+      expire_after: 30.minute
+
     config.eager_load_paths << Rails.root.join('lib')
     config.eager_load_paths << Rails.root.join('app/services')
   end
