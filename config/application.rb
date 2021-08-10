@@ -21,6 +21,8 @@ module ComicsAppChallenge
     config.session_store :cookie_store,
       key: 'session',
       expire_after: 30.minute
+    
+    config.cache_store = :memory_store, { size: 128.megabytes }
 
     config.eager_load_paths << Rails.root.join('lib')
     config.eager_load_paths << Rails.root.join('app/services')

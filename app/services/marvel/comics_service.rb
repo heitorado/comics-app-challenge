@@ -10,23 +10,27 @@ module Marvel
 
     def get_comics(page:, **opts)
       limit = opts[:limit] || MarvelApi::V1::Client::DEFAULT_ITEMS_PER_PAGE
-      response_hash = @client.comics(page: page, limit: limit, **opts)
+
+      response_hash = 
+        Rails.cache.fetch("#{page}#{limit}#{opts}/comics", expires_in: 15.minutes) do
+          @client.comics(page: page, limit: limit, **opts)
+        end
 
       set_pagination_info(response_hash)
-
       comics_hash = response_hash.dig(:data, :results) || {}
-
       build_comics(comics_hash)
     end
 
     def get_characters(page:, **opts)
       limit = opts[:limit] || MarvelApi::V1::Client::DEFAULT_ITEMS_PER_PAGE
-      response_hash = @client.characters(page: page, limit: limit, **opts)
+      
+      response_hash = 
+        Rails.cache.fetch("#{page}#{limit}#{opts}/characters", expires_in: 15.minutes) do
+          response_hash = @client.characters(page: page, limit: limit, **opts)
+        end
 
       set_pagination_info(response_hash)
-
       characters_hash = response_hash.dig(:data, :results) || {}
-
       build_characters(characters_hash)
     end
 
