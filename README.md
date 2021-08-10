@@ -68,9 +68,18 @@ Also learned how to do the nice hover effect for each comic cover to display its
 Added the assets to the main project and finished the basic initial layout of the comics listing page, with logo and search box.
 
 ### Day 3
+#### Part 1
 Implemented the search box logic, which allows to search by character. Added extra endpoint on the API and a Character value object.
 When searching by character, the /characters API endpoint is queried using the 'nameStartsWith' option, to give more flexibility when searching (does not require an exact match). The number of characters returned can be more than one, so the Character objects are created for each one of the characters - this way we can easily access the ID after and insert the list of IDs when querying for comics using the 'characters' query parameter.
 - The problem with this approach is that only 10 IDs can be passed at a time in the 'characters' parameter. So if more than 10 matching characters are found, not all of them would be used to query for comics. Although 10 characters _might_ be sufficient to track the most relevant characters that match the input string, there could be a user-frustrating corner case there.
 - Another approach would be to iterate through all Characters and obtain the complete list of comics which is provided in the payload. However, that would add an extra complexity to filter the comics, while on the previous approach the query does it directly with the character IDs.
 
+#### Part 2
+Pagination implemented. Just added some environment variables which are populated after every call to ComicsService, indicating the current page and the last page. These variables allowed me to define helpers that tell the view when to render the appropriate buttons. Some styling here and there, and it was done.
 
+Spent some time thinking and researching about the simple cookie based session + the favourites feature. I was thinking that since no user management was present, this would be an application without any models. But not really. Learned that it is not good to store lots of things in a cookie, so the cookie can have just the primary key of a database record which I can retrieve and update freely. That would allow me to keep track of the favourited comics.
+When thinking about that and about the external rate limiting that the Marvel API could apply, I had the idea of using Redis. With redis I could easily store the favourited comics for each user session, easily purge them after 30 minutes and also keep the already fetched comics in cache for some time, which would drastically reduce the number of queries made to the API (currently one each time a new page loads, and two every time the search box is used)
+
+However, it would add some complexity to run my code afterwards (installing redis, setting up the server/port) and I want to avoid crazy steps for running this project. Redis is canceled for now, then.
+
+Took a deeper look at memcached, which is pretty cool but still requires an external server. MemoryStore will probably do the job for this application, since we do not intend to run multiple instances of it.
