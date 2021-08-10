@@ -34,10 +34,6 @@
       width: 100%;
       min-height: 2.6rem;
       background-color: white;
-      border-bottom: #ff0000;
-      border-style: solid;
-      border-top-width: 0;
-      border-bottom-width: 0.5rem;
       display: flex;
       align-items: center;
     }
@@ -48,6 +44,17 @@
       font-weight: bold;
       margin: 0 0.5rem;
     }
+  }
+
+  .comic-cover-overlay.unfavourited {
+    box-sizing: border-box;
+    border-bottom: 0.3rem solid #ff0000;
+    margin-bottom: -0.3rem;
+  }
+  .comic-cover-overlay.favourited {
+    outline: 0.3rem solid #ff0000;
+    outline-offset: -0.3rem;
+    z-index: 999;
   }
 
   .comic-cover-overlay > * {
@@ -101,7 +108,7 @@
 }
 
 .favourite-button, .unfavourite-button {
-  margin: 0.3rem;
+  margin: 0.4rem;
 }
 
 .favourite-button {
