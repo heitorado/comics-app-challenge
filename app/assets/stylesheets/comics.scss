@@ -108,28 +108,25 @@
 }
 
 .favourite-button, .unfavourite-button {
+  cursor: pointer;
   margin: 0.4rem;
+  height: 23px;
+  width: 23px;
 }
 
 .favourite-button {
   border-style: hidden;
   background: image-url('heart_off.png');
   background-size: cover;
-  height: 16px;
-  width: 18px;
 }
 
 .favourite-button:hover {
   background: image-url('heart_hover.png');
   background-size: cover;
-  height: 16px;
-  width: 18px;
 }
 
 .unfavourite-button {
   border-style: hidden;
   background: image-url('heart_on.png');
   background-size: cover;
-  width: 23px;
-  height: 23px;
 }
