@@ -9,7 +9,8 @@ class ComicsController < ApplicationController
 
     @comics_service = Marvel::ComicsService.new
     characters = @comics_service.get_characters(page: comic_params[:page].to_i, name_starts_with: comic_params[:character_name_query])
-    @comics = @comics_service.get_comics(page: comic_params[:page].to_i, character_ids: characters.map(&:id))
+    
+    @comics = characters.present? ? @comics_service.get_comics(page: comic_params[:page].to_i, character_ids: characters.map(&:id)) : []
 
     render :index
   end
