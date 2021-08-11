@@ -1,6 +1,6 @@
 module MarvelApi
   module V1
-    module ParameterValues
+    module AllowedParameterValues
       THUMBNAIL_SIZES = {
         small: 'portrait_small',
         medium: 'portrait_xlarge',

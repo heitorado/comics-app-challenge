@@ -3,7 +3,7 @@ require 'rest-client'
 module MarvelApi
   module V1
     class Client
-      include MarvelApi::V1::ParameterValues
+      include MarvelApi::V1::AllowedParameterValues
 
       DEFAULT_SORT_PARAMETER = SORT_PARAMETER[:on_sale_date]
       DEFAULT_SORT_DIRECTION = SORT_DIRECTION[:desc]
@@ -78,6 +78,10 @@ module MarvelApi
 
       def get(route, params = {})
         RestClient.get("#{@api_url}/#{route}?#{@credentials}&#{build_params(params)}")
+      rescue RestClient::Exception => e
+        # Log the response and return empty JSON
+        Rails.logger.error e.response
+        '{}'
       end
 
       def build_credentials
