@@ -71,32 +71,6 @@
   z-index: 99;
 }
 
-.navigation {
-  text-align: center;
-  padding: 0 4.5rem;
-  margin-top: 2rem;
-
-  .page-navigation-button {
-    background-color: white;
-    color: #ed2324;
-    padding: 0.2rem 0.5rem;
-    text-decoration: none;
-    text-transform: uppercase;
-    font-weight: bold;
-    width: 8.5rem;
-  }
-
-  .next {
-    float: right;
-    margin-bottom: 3rem;
-  }
-
-  .previous {
-    float: left;
-    margin-bottom: 3rem;
-  }
-}
-
 .favourite-button-section {
   position: absolute;
   top: 0.2rem;
@@ -129,4 +103,37 @@
   border-style: hidden;
   background: image-url('heart_on.png');
   background-size: cover;
+}
+
+.page-navigation {
+  text-align: center;
+  padding: 0 4.5rem;
+  margin-top: 2rem;
+
+  .page-navigation-button {
+    background-color: white;
+    color: #ed2324;
+    padding: 0.2rem 0.5rem;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+    width: 8.5rem;
+  }
+
+  .next {
+    float: right;
+    margin-bottom: 3rem;
+  }
+
+  .previous {
+    float: left;
+    margin-bottom: 3rem;
+  }
+}
+
+.no-results {
+  text-align: center;
+  color: rgba(107, 114, 121, 0.6);
+  font-size: x-large;
+  margin: 15rem 10rem;
 }
