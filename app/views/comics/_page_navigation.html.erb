@@ -1,0 +1,7 @@
+<% unless first_page? %>
+  <%= link_to 'previous page', root_path(page: current_page - 1), class: 'page-navigation-button previous' %>
+<% end %>
+
+<% unless last_page? %>
+  <%= link_to 'next page', root_path(page: current_page + 1), class: 'page-navigation-button next' %>
+<% end%>
