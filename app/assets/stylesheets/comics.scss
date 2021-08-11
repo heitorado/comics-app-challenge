@@ -29,6 +29,10 @@
     justify-content: flex-end;
     opacity: 0;
     transition: opacity 0.25s;
+    box-sizing: border-box;
+    border-bottom: 0.3rem solid #ff0000;
+    margin-bottom: -0.3rem;
+    z-index: 99;
 
     .comic-title {
       width: 100%;
@@ -36,6 +40,7 @@
       background-color: white;
       display: flex;
       align-items: center;
+      z-index: -1;
     }
 
     .comic-title-text {
@@ -44,17 +49,6 @@
       font-weight: bold;
       margin: 0 0.5rem;
     }
-  }
-
-  .comic-cover-overlay.unfavourited {
-    box-sizing: border-box;
-    border-bottom: 0.3rem solid #ff0000;
-    margin-bottom: -0.3rem;
-  }
-  .comic-cover-overlay.favourited {
-    outline: 0.3rem solid #ff0000;
-    outline-offset: -0.3rem;
-    z-index: 999;
   }
 
   .comic-cover-overlay > * {
@@ -69,6 +63,12 @@
   .comic-cover-overlay:hover > * {
     transform: translateY(0);
   }
+}
+
+.comic-cover-overlay.favourited, .comic.favourited {
+  outline: 0.3rem solid #ff0000;
+  outline-offset: -0.25rem;
+  z-index: 99;
 }
 
 .navigation {

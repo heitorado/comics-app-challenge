@@ -1,11 +1,12 @@
 <div class="content">
   <div class="comics-grid">
     <% @comics.each do |comic| %>
-      <div class="comic">
+      <% favourite_class = user_favourite?(comic.id) ? 'favourited' : '' %>
+      <div class="comic <%= favourite_class %>">
         <img class="comic-cover" src=<%= comic.thumbnail_urls[:medium] %> alt=<%= comic.title %>>
-        <div class="comic-cover-overlay">
+        <div class="comic-cover-overlay <%= favourite_class %>">
           <div class="favourite-button-section">
-            <%= render partial: 'favourite_button', locals: { user: @user, comic_id: comic.id }%>
+            <%= render partial: 'favourite_button', locals: { comic_id: comic.id }%>
           </div>
           <div class="comic-title">
             <p class="comic-title-text">
