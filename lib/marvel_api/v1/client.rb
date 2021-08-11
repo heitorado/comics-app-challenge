@@ -24,7 +24,7 @@ module MarvelApi
         sort_direction = opts[:sort_direction] || DEFAULT_SORT_DIRECTION
         format_type = opts[:format_type] || DEFAULT_FORMAT_TYPE
         no_variants = opts[:no_variants].present? ? opts[:no_variants] : true
-        character_ids = opts[:character_ids] ||  nil
+        character_ids = opts[:character_ids].present? ? opts[:character_ids] : nil
 
         parse(
           get(
@@ -38,7 +38,7 @@ module MarvelApi
               dateRange: ",#{Time.current.strftime('%Y-%m-%d')}",
               characters: character_ids&.first(MAX_ALLOWED_CHARACTER_IDS)&.join(',')
             }.compact
-          ).body
+          )
         )
       end
 
@@ -56,7 +56,7 @@ module MarvelApi
               offset: (page - 1) * limit, 
               nameStartsWith: name_starts_with
             }.compact
-          ).body
+          )
         )
       end
 
@@ -72,16 +72,20 @@ module MarvelApi
         limit
       end
 
-      def parse(body)
+      def parse(response)
+        body = response&.body
+
+        return if body.blank?
+
         JSON.parse(body, symbolize_names: true)
       end
 
       def get(route, params = {})
         RestClient.get("#{@api_url}/#{route}?#{@credentials}&#{build_params(params)}")
       rescue RestClient::Exception => e
-        # Log the response and return empty JSON
+        # Log the response and return nil
         Rails.logger.error e.response
-        '{}'
+        nil
       end
 
       def build_credentials
