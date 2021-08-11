@@ -1,12 +1,22 @@
 require "test_helper"
 
 class ComicsControllerTest < ActionDispatch::IntegrationTest
+  def setup
+    @comics_service = Marvel::ComicsService.new
+    Marvel::ComicsService.expects(:new).returns(@comics_service).at_most(1)
+  end
+
   test "should get index as root url" do
+    @comics_service.expects(:get_comics)
+
     get root_url
     assert_response :success
   end
 
   test "should get search_by_character" do
+    @comics_service.expects(:get_characters)
+    @comics_service.expects(:get_comics).at_most(1)
+
     get search_by_character_url(character_name_query: 'some character')
     assert_response :success
   end
